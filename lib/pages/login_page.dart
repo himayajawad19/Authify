@@ -94,8 +94,9 @@ class LoginPage extends StatelessWidget {
   Widget _LoginButton() {
     return MaterialButton(
       minWidth: devicewidth * 0.38,
-      height: deviceheight * 0.01,
-      color: Colors.white,
+      height: deviceheight * 0.05,
+      // highlightColor: Colors.amber,
+      color: const Color.fromARGB(255, 171, 113, 14),
       child: Text(
         'LOGIN ',
         style: TextStyle(
@@ -103,7 +104,10 @@ class LoginPage extends StatelessWidget {
             fontSize: 16,
             fontWeight: FontWeight.bold),
       ),
-      onPressed: null,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(500),
+      ),
+      onPressed: () {},
     );
   }
 }
