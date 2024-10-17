@@ -1,9 +1,53 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
+import '../pages/utils/animiations/login_page_animations.dart';
+import '../pages/login_page.dart';
+import '../pages/pageRoutes/slide_transition_route.dart';
+
+class AnimatedHomePage extends StatefulWidget {
+  const AnimatedHomePage({super.key});
+
+  @override
+  State<AnimatedHomePage> createState() => _AnimatedHomePageState();
+}
+
+class _AnimatedHomePageState extends State<AnimatedHomePage>
+    with SingleTickerProviderStateMixin {
+  @override
+  late AnimationController _controller;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 1),
+        reverseDuration: Duration(milliseconds: 400));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return HomePage(_controller);
+  }
+}
 
 class HomePage extends StatelessWidget {
   late double deviceheight;
   late double devicewidth;
+
+  late AnimationController _controller;
+  late EnterAnimation animation;
+  HomePage(this._controller, {super.key}) {
+    animation = EnterAnimation(_controller);
+    _controller.forward();
+  }
   @override
   Widget build(BuildContext context) {
     deviceheight = MediaQuery.of(context).size.height;
@@ -34,15 +78,24 @@ class HomePage extends StatelessWidget {
 
   Widget _avatarWidget() {
     double circleD = deviceheight * 0.25;
-    return Container(
-      height: circleD,
-      width: circleD,
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(121, 155, 133, 128),
-          borderRadius: BorderRadius.circular(500),
-          image: DecorationImage(
-              image: AssetImage('assets/images/download.jpeg'))),
-    );
+    return AnimatedBuilder(
+        animation: animation.controller,
+        builder: (BuildContext _context, Widget? _widget) {
+          return Transform(
+            transform: Matrix4.diagonal3Values(
+                animation.circleSzie.value, animation.circleSzie.value, 1),
+            alignment: Alignment.center,
+            child: Container(
+              height: circleD,
+              width: circleD,
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(121, 155, 133, 128),
+                  borderRadius: BorderRadius.circular(500),
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/download.jpeg'))),
+            ),
+          );
+        });
   }
 
   Widget _nameWidget() {
@@ -73,10 +126,7 @@ class HomePage extends StatelessWidget {
       ),
       onPressed: () {
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginPage(context),
-            ));
+            context, SlideTransitionRoute(AnimatedLoginPage()));
       },
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/utils/animiations/login_page_animations.dart';
+import '../pages/pageRoutes/fade_transition_route.dart';
 
 class AnimatedLoginPage extends StatefulWidget {
   // const AnimatedLoginPage({super.key});
@@ -22,8 +23,8 @@ class _AnimatedLoginPageState extends State<AnimatedLoginPage>
     super.initState();
     _controller = AnimationController(
         vsync: this,
-        duration: Duration(seconds: 2),
-        reverseDuration: Duration(milliseconds: 200));
+        duration: Duration(seconds: 1),
+        reverseDuration: Duration(milliseconds: 400));
   }
 
   @override
@@ -45,8 +46,7 @@ class LoginPage extends StatelessWidget {
   Color primaryColor = Color.fromRGBO(211, 161, 125, 1);
   late AnimationController _controller;
   late EnterAnimation animation;
-  LoginPage(_controller) {
-    _controller = _controller;
+  LoginPage(this._controller, {super.key}) {
     animation = EnterAnimation(_controller);
     _controller.forward();
   }
@@ -161,12 +161,10 @@ class LoginPage extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(500),
       ),
-      onPressed: () {
+      onPressed: () async {
+        await _controller.reverse();
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomePage(),
-            ));
+            context, FadeTransitionRoute(AnimatedHomePage()));
       },
     );
   }
