@@ -1,9 +1,53 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+
+import '../pages/utils/animiations/login_page_animations.dart';
+
+class AnimatedLoginPage extends StatefulWidget {
+  // const AnimatedLoginPage({super.key});
+
+  @override
+  State<AnimatedLoginPage> createState() => _AnimatedLoginPageState();
+}
+
+class _AnimatedLoginPageState extends State<AnimatedLoginPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 2),
+        reverseDuration: Duration(milliseconds: 200));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LoginPage(_controller);
+  }
+}
 
 class LoginPage extends StatelessWidget {
   late double deviceheight;
   late double devicewidth;
   Color primaryColor = Color.fromRGBO(211, 161, 125, 1);
+  late AnimationController _controller;
+  late EnterAnimation animation;
+  LoginPage(_controller) {
+    _controller = _controller;
+    animation = EnterAnimation(_controller);
+    _controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +81,23 @@ class LoginPage extends StatelessWidget {
 
   Widget _avatarWidget() {
     double circleD = deviceheight * 0.25;
-    return Container(
-      height: circleD,
-      width: circleD,
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(121, 155, 133, 128),
-          borderRadius: BorderRadius.circular(500),
-          image: DecorationImage(
-              image: AssetImage('assets/images/download.jpeg'))),
-    );
+    return AnimatedBuilder(
+        animation: animation.controller,
+        builder: (BuildContext _context, Widget? _widget) {
+          return Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.diagonal3Values(
+                  animation.circleSzie.value, animation.circleSzie.value, 1),
+              child: Container(
+                height: circleD,
+                width: circleD,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(121, 155, 133, 128),
+                    borderRadius: BorderRadius.circular(500),
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/download.jpeg'))),
+              ));
+        });
   }
 
   Widget _emailTextFeildWidget() {
