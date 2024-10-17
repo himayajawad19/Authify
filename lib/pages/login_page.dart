@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:authify/pages/home_page.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/utils/animiations/login_page_animations.dart';
@@ -71,7 +73,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: deviceheight * 0.025),
               _passwordTextFeildWidget(),
               SizedBox(height: deviceheight * 0.1),
-              _LoginButton()
+              _LoginButton(context)
             ],
           ),
         ),
@@ -111,7 +113,7 @@ class LoginPage extends StatelessWidget {
           // fontSize: deviceheight * 0.02,
         ),
         decoration: InputDecoration(
-            hintText: 'Alina@gmail.com',
+            hintText: 'HIMAYAJAWAD@gmail.com',
             hintStyle: TextStyle(color: Colors.white),
             enabledBorder:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
@@ -143,7 +145,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _LoginButton() {
+  Widget _LoginButton(BuildContext context) {
     return MaterialButton(
       minWidth: devicewidth * 0.38,
       height: deviceheight * 0.05,
@@ -159,7 +161,13 @@ class LoginPage extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(500),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ));
+      },
     );
   }
 }
